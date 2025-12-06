@@ -44,6 +44,18 @@ class InfoDB:
         ORDER BY water DESC
         LIMIT 10''')
         return cur.fetchall()
+    
+    def get_cookies_leaderboard(self):
+        conn = sqlite3.connect(self.database)
+        with conn:
+            cur = conn.cursor()
+            cur.execute('''
+        SELECT user_id, username, ROUND(cookies, 3) 
+        FROM InfoDB 
+        ORDER BY cookies DESC
+        LIMIT 10''')
+        return cur.fetchall()
+        
         
     # Amount of Water
     
@@ -55,12 +67,12 @@ class InfoDB:
             ''', (amount, user_id))
             conn.commit()
 
-    def get_water(self, user_id):
+    def get_amount(self, user_id):
         conn = sqlite3.connect(self.database)
         with conn:
             cur = conn.cursor()
-            cur.execute('''SELECT ROUND(water, 3) FROM InfoDB WHERE user_id = ?''', (user_id))
-        return cur.fetchall()[0][0]
+            cur.execute('''SELECT ROUND(water, 3), ROUND(cookies, 3) FROM InfoDB WHERE user_id = ?''', (user_id))
+        return cur.fetchall()[0]
 
 
     # Update Amount of Cookies
@@ -116,5 +128,6 @@ if __name__ == '__main__':
     #manager.tablecreate()
     #manager.update_last_time('10:00', 4900255)
     #manager.registration(4900255, 'gsgsgghw')
-    print(manager.get_last_time_water([(1692557632)]))
-    print(manager.get_water_leaderboard())
+    #print(manager.get_last_time_water([(1692557632)]))
+    #print(manager.get_water_leaderboard())
+    #print(manager.get_amount([(1692557632)]))
