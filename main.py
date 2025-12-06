@@ -398,5 +398,5 @@ def handler_messages(message):
             bot.reply_to(message, f"Пользователь @{username} был забанен.")
 
 if __name__ == '__main__':
-    manager = InfoDB('InfoDB')
+    manager = InfoDB('info.db')
     bot.infinity_polling(none_stop=True)

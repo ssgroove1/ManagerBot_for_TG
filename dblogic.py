@@ -22,14 +22,14 @@ class InfoDB:
     def registration(self, user_id, user_name, date):
         conn = sqlite3.connect(self.database)
         with conn:
-            conn.execute('INSERT INTO InfoDB VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (user_id, user_name, 0, 0, 0, 0, date, date))
+            conn.execute('INSERT INTO infoDB VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (user_id, user_name, 0, 0, 0, 0, date, date))
             conn.commit()
 
     def get_users(self):
         conn = sqlite3.connect(self.database)
         with conn:
             cur = conn.cursor()
-            cur.execute('''SELECT * FROM InfoDB''')
+            cur.execute('''SELECT * FROM infoDB''')
             return [x[0] for x in cur.fetchall()]
         
     # Leaderboard
@@ -40,7 +40,7 @@ class InfoDB:
             cur = conn.cursor()
             cur.execute('''
         SELECT user_id, username, ROUND(water, 3) 
-        FROM InfoDB 
+        FROM infoDB 
         ORDER BY water DESC
         LIMIT 10''')
         return cur.fetchall()
@@ -51,7 +51,7 @@ class InfoDB:
             cur = conn.cursor()
             cur.execute('''
         SELECT user_id, username, ROUND(cookies, 3) 
-        FROM InfoDB 
+        FROM infoDB 
         ORDER BY cookies DESC
         LIMIT 10''')
         return cur.fetchall()
@@ -63,7 +63,7 @@ class InfoDB:
         conn = sqlite3.connect(self.database)
         with conn:
             conn.execute('''
-            UPDATE InfoDB SET water = water + ? WHERE user_id = ?
+            UPDATE infoDB SET water = water + ? WHERE user_id = ?
             ''', (amount, user_id))
             conn.commit()
 
@@ -71,7 +71,7 @@ class InfoDB:
         conn = sqlite3.connect(self.database)
         with conn:
             cur = conn.cursor()
-            cur.execute('''SELECT ROUND(water, 3), ROUND(cookies, 3) FROM InfoDB WHERE user_id = ?''', (user_id))
+            cur.execute('''SELECT ROUND(water, 3), ROUND(cookies, 3) FROM infoDB WHERE user_id = ?''', (user_id))
         return cur.fetchall()[0]
 
 
@@ -81,7 +81,7 @@ class InfoDB:
         conn = sqlite3.connect(self.database)
         with conn:
             conn.execute('''
-            UPDATE InfoDB SET cookies = cookies + ? WHERE user_id = ?
+            UPDATE infoDB SET cookies = cookies + ? WHERE user_id = ?
             ''', (amount, user_id))
             conn.commit()
 
@@ -91,7 +91,7 @@ class InfoDB:
         conn = sqlite3.connect(self.database)
         with conn:
             conn.execute('''
-            UPDATE InfoDB SET last_cookie = ? WHERE user_id = ?
+            UPDATE infoDB SET last_cookie = ? WHERE user_id = ?
             ''', (date_now, user_id))
             conn.commit()
 
@@ -100,7 +100,7 @@ class InfoDB:
         with conn:
             cur = conn.cursor()
             cur.execute(''' 
-                SELECT last_cookie FROM InfoDB
+                SELECT last_cookie FROM infoDB
                 WHERE user_id = ?''', (user_id))
             return cur.fetchall()[0][0]
         
@@ -110,7 +110,7 @@ class InfoDB:
         conn = sqlite3.connect(self.database)
         with conn:
             conn.execute('''
-            UPDATE InfoDB SET last_water = ? WHERE user_id = ?
+            UPDATE infoDB SET last_water = ? WHERE user_id = ?
             ''', (date_now, user_id))
             conn.commit()
 
@@ -119,7 +119,7 @@ class InfoDB:
         with conn:
             cur = conn.cursor()
             cur.execute(''' 
-                SELECT last_water FROM InfoDB
+                SELECT last_water FROM infoDB
                 WHERE user_id = ?''', (user_id))
             return cur.fetchall()[0][0]
 
